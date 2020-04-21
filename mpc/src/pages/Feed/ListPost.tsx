@@ -1,5 +1,5 @@
-import React, { ReactNode } from 'react';
-import { IonCard, IonCardHeader, IonCardContent, IonContent, IonImg, IonAvatar, IonIcon } from '@ionic/react';
+import React, { ReactNode, useState } from 'react';
+import { IonCard, IonCardHeader, IonCardContent, IonContent, IonImg, IonAvatar, IonIcon, IonPopover } from '@ionic/react';
 import './style.css';
 
 import { ellipsisHorizontalOutline, location, calendarOutline, timeOutline, heart } from 'ionicons/icons';
@@ -8,6 +8,7 @@ interface Academic {
     name: string
 }
 interface Post {
+    id: string,
     counselor: {
         name: string,
         image: string,
@@ -26,10 +27,13 @@ interface Post {
 
 interface Props {
     user?: ReactNode
-    post_list?: Post[]
+    post_list?: Post[],
+    funcOnLike: (index: number) => void
 }
 
-const LOAD_LIST: React.FC<Props> = ({ post_list }: Props) => {
+const LOAD_LIST: React.FC<Props> = ({ post_list, funcOnLike }: Props) => {
+    const [showPopover, setShowPopover] = useState("")
+
     return (
         <React.Fragment>
             {post_list && post_list.map((post, index) => {
@@ -49,7 +53,13 @@ const LOAD_LIST: React.FC<Props> = ({ post_list }: Props) => {
                                     </div>
                                 </div>
                                 <div className="more">
-                                    <IonIcon icon={ellipsisHorizontalOutline} />
+                                    <IonPopover
+                                        isOpen={post.id === showPopover}
+                                        onDidDismiss={() => setShowPopover("")}
+                                    >
+                                        <p>This is popover content</p>
+                                    </IonPopover>
+                                    <IonIcon icon={ellipsisHorizontalOutline} onClick={() => setShowPopover(post.id)} />
                                 </div>
                             </div>
                         </IonCardHeader>
@@ -76,7 +86,7 @@ const LOAD_LIST: React.FC<Props> = ({ post_list }: Props) => {
                         }
                         <IonCardContent>{post.description}</IonCardContent>
                         <div className="container-footer">
-                            <div className="like"><IonIcon icon={heart} /></div>
+                            <div className="like"><IonIcon icon={heart} onClick={() => funcOnLike(index)} /></div>
                             <div className="date">{post.date}</div>
                         </div>
                     </IonCard>
