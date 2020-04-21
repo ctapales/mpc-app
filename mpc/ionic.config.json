@@ -1,0 +1,7 @@
+{
+  "name": "mpc",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
