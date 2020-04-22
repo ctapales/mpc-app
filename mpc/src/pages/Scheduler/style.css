@@ -1,0 +1,43 @@
+.container-control, .container-month, .container-week, .container-dates {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.container-control {
+    padding: 10px 0px;
+}
+
+.arrow {
+    min-width: 10vh;
+    font-size: 16px;
+    display: flex;
+    align-items: center ;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.month {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.container-month {
+    flex: auto;
+    display: flex;
+    align-items: center ;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.day-week, .day-last, .day-current, .day-next {
+    font-size: 16px;
+    flex: 0 0 14.285714285714286%;
+    width: 14.285714285714286%;
+    max-width: 14.285714285714286%;
+    padding: 1vh;
+    text-align: center;
+}
+
+.day-last, .day-next {
+    font-size: 15px;
+}
