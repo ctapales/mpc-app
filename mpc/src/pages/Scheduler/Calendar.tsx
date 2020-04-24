@@ -1,34 +1,53 @@
 import React, { useState } from 'react';
 import './style.css';
-import { IonCard, IonIcon } from '@ionic/react';
+import moment from 'moment';
+import { IonIcon } from '@ionic/react';
 import { arrowBack, arrowForward } from 'ionicons/icons';
 
-interface Props { }
+interface Appointment {
+    id: string,
+    datetime: Date,
+    status: string
+}
+
+interface Props {
+    appointment_list?: Appointment[]
+}
 
 const MONTH_LIST = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
-const LOAD_CALENDAR: React.FC<Props> = () => {
-    const [date, setDate] = useState(new Date());
-    const currentMonthName = MONTH_LIST[date.getMonth()];
-    const currentYear = date.getFullYear();
+const LOAD_CALENDAR: React.FC<Props> = ({ appointment_list }: Props) => {
+    const [month, setMonth] = useState(new Date());
+    const [selectedDate, setSelectedDate] = useState(moment(new Date(month)).format('MMM YYYY DD'));
+    const currentMonthName = MONTH_LIST[month.getMonth()];
+    const currentYear = month.getFullYear();
 
     let daysOfCurrentMonth = [];
     let daysLastMonth = [];
     let daysNextMonth = [];
 
-    let firstDayMonth = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
-    let lastDaysPrevMonth = new Date(date.getFullYear(), date.getMonth(), 0).getDate();
+    let firstDayMonth = new Date(month.getFullYear(), month.getMonth(), 1).getDay()
+    let lastDaysPrevMonth = new Date(month.getFullYear(), month.getMonth(), 0).getDate();
     for (var a = lastDaysPrevMonth - (firstDayMonth - 1); a <= lastDaysPrevMonth; a++) {
         daysLastMonth.push(a);
     }
 
-    let totalDaysOfCurrentMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    let totalDaysOfCurrentMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
     for (var b = 0; b < totalDaysOfCurrentMonth; b++) {
-        daysOfCurrentMonth.push(b + 1);
+        let calendar_date = moment(new Date(month.getFullYear(), month.getMonth(), b + 1)).format('MMM YYYY DD');
+        let appointment = appointment_list?.filter(function (appointment) {
+            let appointment_date = moment(new Date(appointment.datetime)).format('MMM YYYY DD');
+            return appointment_date === calendar_date;
+        })
+
+        let today = calendar_date === selectedDate ? true : false;
+        let occupied = appointment?.length === 0 ? false : true;
+
+        daysOfCurrentMonth.push({ "num": b + 1, "occupied": occupied, "today": today });
     }
 
-    var lastDayThisMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDay();
+    var lastDayThisMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDay();
     for (var c = 0; c < (6 - lastDayThisMonth); c++) {
         daysNextMonth.push(c + 1);
     }
@@ -44,11 +63,11 @@ const LOAD_CALENDAR: React.FC<Props> = () => {
         <React.Fragment>
             <div className="container-card">
                 <div className="container-control">
-                    <div className="arrow"><IonIcon onClick={() => setDate(new Date(date.getFullYear(), date.getMonth(), 0))} icon={arrowBack} /></div>
+                    <div className="arrow"><IonIcon onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth(), 0))} icon={arrowBack} /></div>
                     <div className="container-month">
                         <div className="month">{currentMonthName} {currentYear}</div>
                     </div>
-                    <div className="arrow"><IonIcon onClick={() => setDate(new Date(date.getFullYear(), date.getMonth() + 2, 0))} icon={arrowForward} /></div>
+                    <div className="arrow"><IonIcon onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 2, 0))} icon={arrowForward} /></div>
                 </div>
                 <div className="container-week">
                     <div className="day-week"><div>Sun</div></div>
@@ -67,7 +86,15 @@ const LOAD_CALENDAR: React.FC<Props> = () => {
                     })}
                     {daysOfCurrentMonth.map((date, index) => {
                         return (
-                            <div key={index} className="day-current">{date}</div>
+                            <div key={index} className="day-current">
+                                <div className={
+                                    date.occupied ? "occupied" : ""
+                                }>
+                                    <div className={
+                                        date.today ? "today" : ""
+                                    }>{date.num}</div>
+                                </div>
+                            </div>
                         )
                     })}
                     {daysNextMonth.map((date, index) => {

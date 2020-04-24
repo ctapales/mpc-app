@@ -49,7 +49,7 @@ class SCHEDULER extends Component<Props, State>  {
             { name: "College1" },
             { name: "College2" }
           ],
-          datetime: new Date(),
+          datetime: new Date("Mon Apr 27 2020 00:00:00 GMT+0800 (China Standard Time)"),
           concern: "Procratination",
           venue: "I am venue",
           description: "I am description",
@@ -65,7 +65,7 @@ class SCHEDULER extends Component<Props, State>  {
             { name: "College1" },
             { name: "College2" }
           ],
-          datetime: new Date(),
+          datetime: new Date("Sat Apr 25 2020 00:00:00 GMT+0800 (China Standard Time)"),
           concern: "Lovelife",
           venue: "I am venue",
           description: "I am description",
@@ -85,8 +85,8 @@ class SCHEDULER extends Component<Props, State>  {
         </IonHeader>
         <IonContent>
           <div className="container-main">
-          <LOAD_CALENDAR {...this.state} />
-          <APPOINTMENT_LIST {...this.state} />F
+            <LOAD_CALENDAR {...this.state} />
+            <APPOINTMENT_LIST {...this.state} />
           </div>
         </IonContent>
       </IonPage>
