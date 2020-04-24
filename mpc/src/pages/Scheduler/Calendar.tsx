@@ -42,23 +42,22 @@ const LOAD_CALENDAR: React.FC<Props> = () => {
 
     return (
         <React.Fragment>
-            <IonCard>
+            <div className="container-card">
                 <div className="container-control">
-                    <div className="arrow" onClick={() => setDate(new Date(date.getFullYear(), date.getMonth(), 0))}><IonIcon icon={arrowBack}/></div>
+                    <div className="arrow"><IonIcon onClick={() => setDate(new Date(date.getFullYear(), date.getMonth(), 0))} icon={arrowBack} /></div>
                     <div className="container-month">
-                        <div className="month">{currentMonthName}</div>
-                        <div className="year">{currentYear}</div>
+                        <div className="month">{currentMonthName} {currentYear}</div>
                     </div>
-                    <div className="arrow" onClick={() => setDate(new Date(date.getFullYear(), date.getMonth()+2, 0))}><IonIcon icon={arrowForward}/></div>
+                    <div className="arrow"><IonIcon onClick={() => setDate(new Date(date.getFullYear(), date.getMonth() + 2, 0))} icon={arrowForward} /></div>
                 </div>
                 <div className="container-week">
-                    <div className="day-week">Sun</div>
-                    <div className="day-week">Mon</div>
-                    <div className="day-week">Tue</div>
-                    <div className="day-week">Wed</div>
-                    <div className="day-week">Thu</div>
-                    <div className="day-week">Fri</div>
-                    <div className="day-week">Sat</div>
+                    <div className="day-week"><div>Sun</div></div>
+                    <div className="day-week"><div>Mon</div></div>
+                    <div className="day-week"><div>Tue</div></div>
+                    <div className="day-week"><div>Wed</div></div>
+                    <div className="day-week"><div>Thu</div></div>
+                    <div className="day-week"><div>Fri</div></div>
+                    <div className="day-week"><div>Sat</div></div>
                 </div>
                 <div className="container-dates">
                     {daysLastMonth.map((date, index) => {
@@ -77,7 +76,7 @@ const LOAD_CALENDAR: React.FC<Props> = () => {
                         )
                     })}
                 </div>
-            </IonCard>
+            </div>
         </React.Fragment>
     );
 };
